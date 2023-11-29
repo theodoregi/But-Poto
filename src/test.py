@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img_name = '025-rgb.png'
+img_name = '010-rgb.png'
 
 er = 2
 erosion_size = (er,er)
@@ -12,6 +12,7 @@ closing_size = (di,di)
 
 img = cv2.imread('./data/log1/'+img_name, 0)
 img_color = cv2.imread('./data/log1/'+img_name, 1)
+img_color2 = cv2.imread('./data/log1/'+img_name, 1)
 
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
@@ -63,7 +64,6 @@ for i in range(len(img)):
 
 display(img_color)
 
-# # apply the mask in data/mask/010-rgb.png
 mask = cv2.imread('./data/mask/log1/'+img_name, 0)
 for i in range(len(mask)):
     for j in range(len(mask[i])):
@@ -71,5 +71,37 @@ for i in range(len(mask)):
             img_color[i][j] = [0,0,0]
         elif img_color[i][j][0] != 255 or img_color[i][j][1] != 0 or img_color[i][j][2] != 0:
             img_color[i][j] = [0,0,0]
+
+reg = []
+for line in lines:
+    x1, y1, x2, y2 = line[0]
+    if img_color[y1][x1][0] == 255 and img_color[y1][x1][1] == 0 and img_color[y1][x1][2] == 0:
+        if img_color[y2][x2][0] == 255 and img_color[y2][x2][1] == 0 and img_color[y2][x2][2] == 0:
+            cv2.line(img_color, (x1,y1), (x2,y2), (0,255,0), 2)
+            reg.append([[x1,y1],[x2,y2]])
+        else:
+            cv2.line(img_color, (x1,y1), (x2,y2), (0,0,255), 2)
+            reg.append([[x1,y1],[x2,y2]])
+    else:
+        if img_color[y2][x2][0] == 255 and img_color[y2][x2][1] == 0 and img_color[y2][x2][2] == 0:
+            cv2.line(img_color, (x1,y1), (x2,y2), (0,0,255), 2)
+            reg.append([[x1,y1],[x2,y2]])
+        else:
+            cv2.line(img_color, (x1,y1), (x2,y2), (0,0,0), 2)
+
+xmax = max(reg, key=lambda x: x[0])[0][0]
+xmin = min(reg, key=lambda x: x[0])[0][0]
+ymax = max(reg, key=lambda x: x[1][1]) # et  max(reg, key=lambda x: x[0][1])
+
+print(xmax, xmin, ymax, ymin)
+
+# cv2.line(img_color, (xmin[0][0],xmin[0][1]), (xmax[0][0],xmax[0][1]), (0,0,255), 2)
+# cv2.line(img_color, (xmin[1][0],xmin[1][1]), (xmax[1][0],xmax[1][1]), (0,0,255), 2)
+
+for i in range(len(img)):
+    for j in range(len(img[i])):
+        if img_color[i][j][0] != 0 or img_color[i][j][1] != 0 or img_color[i][j][2] != 255:
+            img_color[i][j] = img_color2[i][j]
+
 
 display(img_color)
