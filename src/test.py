@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+img_name = '025-rgb.png'
 
 er = 2
 erosion_size = (er,er)
@@ -9,8 +10,8 @@ dilate_size = (di,di)
 cl = 3
 closing_size = (di,di)
 
-img = cv2.imread('./data/log1/001-rgb.png', 0)
-img_color = cv2.imread('./data/log1/001-rgb.png', 1)
+img = cv2.imread('./data/log1/'+img_name, 0)
+img_color = cv2.imread('./data/log1/'+img_name, 1)
 
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
@@ -28,6 +29,11 @@ def adaptative_binarization(img):
                 img[i][j] = 0
     return img
 
+def display(img):
+    cv2.imshow('image', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return
 
 for i in range(5):
     img = adaptative_binarization(img)
@@ -52,9 +58,18 @@ for line in lines:
 
 for i in range(len(img)):
     for j in range(len(img[i])):
-        if img_color[i][j][0] != 0 and img_color[i][j][1] != 0 and img_color[i][j][2] != 255:
+        if img_color[i][j][0] != 255 or img_color[i][j][1] != 0 or img_color[i][j][2] != 0:
             img_color[i][j] = img[i][j]
 
-cv2.imshow('image', img_color)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+display(img_color)
+
+# # apply the mask in data/mask/010-rgb.png
+mask = cv2.imread('./data/mask/log1/'+img_name, 0)
+for i in range(len(mask)):
+    for j in range(len(mask[i])):
+        if mask[i][j] == 0:
+            img_color[i][j] = [0,0,0]
+        elif img_color[i][j][0] != 255 or img_color[i][j][1] != 0 or img_color[i][j][2] != 0:
+            img_color[i][j] = [0,0,0]
+
+display(img_color)
