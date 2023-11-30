@@ -1,3 +1,10 @@
+./ML/images/*
+./ML/mask/*
+
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
