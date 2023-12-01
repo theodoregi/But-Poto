@@ -1,6 +1,6 @@
-./ML/images/*
+./ML/image/*
 ./ML/mask/*
-
+*.png
 
 
 
