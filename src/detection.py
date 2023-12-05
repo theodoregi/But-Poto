@@ -1,6 +1,6 @@
 from lib_poto_detection import *
 
-img_name = '020-rgb.png'
+img_name = 'log1/020-rgb.png'
 
 def main():
     er = 2
@@ -12,12 +12,12 @@ def main():
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
 
-    img_grey1 = cv2.imread('./data/log1/'+img_name, 0)
+    img_grey1 = cv2.imread('./data/'+img_name, 0)
     img_grey1 = cv2.morphologyEx(img_grey1, cv2.MORPH_CLOSE, kernel, iterations=1)
 
-    img_color1 = cv2.imread('./data/log1/'+img_name, 1)
+    img_color1 = cv2.imread('./data/'+img_name, 1)
 
-    img_color2 = cv2.imread('./data/log1/'+img_name, 1)
+    img_color2 = cv2.imread('./data/'+img_name, 1)
 
 
     #pré traitement
@@ -38,14 +38,25 @@ def main():
     # contours, hierarchy = cv2.findContours(img_grey1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # cv2.drawContours(img_grey1, contours, -1, (255,255,255), 3)
 
+    #### on calcule l'angle de l'horizon
+    horizon_angle = detect_horizon_angle(img_grey1)
+
+    #### on effectue une rotation de l'image
+    img_grey1 = rotate_image(img_grey1, horizon_angle)
+    img_color1 = rotate_image(img_color1, horizon_angle)
+    img_color2 = rotate_image(img_color2, horizon_angle)
+
     #### on recherche les lignes et on les copie sur img_color1
     img_color1,lines=search_and_draw_lines(img_grey1,img_color1,1.3,np.pi,100,20,1)
+    # cv2.imshow('image', img_color1)
+    # cv2.waitKey(0)
 
     #### on garde la couleur bleue et on l'applique à img_color1. Sinon, on garde du niveau de gris
     img_color1=keep_only_color(img_color1,img_grey1,255,0,0)
 
     #### on crée et applique le masque
-    mask = cv2.imread('./data/mask/log1/'+img_name, 0)
+    mask = cv2.imread('./data/mask/'+img_name, 0)
+    mask = rotate_image(mask, horizon_angle)
     img_color1=apply_mask(img_color1,mask)
 
     #### on garde la couleur bleue et on l'applique à img_color1. Sinon, on met du noir.
@@ -65,6 +76,9 @@ def main():
 
     #### on garde la couleur bleue et on l'applique à img_color2.
     img_color2 = copy_and_keep(img_grey1, img_color1, img_color2, 255, 0, 0)
+
+    #### on rétablit la rotation originale
+    img_color2 = rotate_image(img_color2, -horizon_angle)
 
     display(img_color2)
     return
