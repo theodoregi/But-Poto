@@ -1,19 +1,11 @@
 import os
 import random
-from PIL import Image, ImageOps
+from PIL import Image
 import numpy as np
 
 import tensorflow.keras
-from tensorflow.keras import Input
-
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, UpSampling2D, Conv2DTranspose
-from tensorflow.keras.layers import InputLayer
-import tensorflow.keras.layers as layers
-from tensorflow.keras import backend as K
-from tensorflow.keras.utils import normalize
-from tensorflow.keras.layers import Dense, Reshape
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 
 
 def create_set(path):
@@ -56,9 +48,6 @@ threshold = 128
 value = 1
 y_train = (y_train > threshold) * value
 
-print(x_train[0])
-print(y_train[0])
-
 model = Sequential()
 
 model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape, padding='same'))
@@ -88,11 +77,7 @@ add_up(model, 128)
 add_up(model, 64)
 add_up(model, 32)
 
-
-# model.add(Flatten())
-# model.add(Dense(np.prod(output_shape), activation='sigmoid'))
 model.add(Conv2D(1, kernel_size=(3, 3), activation='sigmoid', padding='same'))
-# model.add(Reshape(output_shape))
 
 model.summary()
 
@@ -103,8 +88,7 @@ model.compile(loss=tensorflow.keras.losses.binary_crossentropy,
 model.fit(x_train, y_train,
             batch_size=batch_size,
             epochs=epochs,
-            verbose=1,
-            validation_data=(x_train, y_train))
+            verbose=1)
 
 x_test_files = []
 y_test_files = []
@@ -113,7 +97,7 @@ for filename in validation_set:
     y_test_files.append('./ML/mask/'+filename)
 
 x_test = [Image.open(filename) for filename in x_test_files]
-y_test = [ImageOps.grayscale(Image.open(filename)) for filename in y_test_files]
+y_test = [np.array(Image.open(filename).convert('L')) for filename in y_test_files]
 
 x_test = np.array(x_test)
 y_test = np.array(y_test)
