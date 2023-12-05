@@ -19,10 +19,9 @@ def copy_mask_files(repo_name):
 
     # register the name of the files
     with open('./ML/mask/'+repo_name+'.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        spamwriter = csv.writer(csvfile, delimiter='\n', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-        for file in files:
-            spamwriter.writerow(file)
+        spamwriter.writerow(files)
     print(files)
     return
 
@@ -39,7 +38,7 @@ def copy_image_files(repo_name):
         for row in spamreader:
             filename = row[0]
             if filename.endswith('.png'):
-                shutil.copy('./data/'+repo_name+'/'+filename, './ML/image/'+filename)
+                shutil.copy('./data/'+filename, './ML/image/'+filename[3]+filename[5:])
     return
 
 if __name__ == '__main__':
