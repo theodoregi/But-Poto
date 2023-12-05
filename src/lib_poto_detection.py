@@ -1,5 +1,7 @@
+from math import *
 import cv2
 import numpy as np
+from sklearn.linear_model import LinearRegression
 
 def raise_error_size_diff(img1,img2):
     if len(img1) != len(img2) or len(img1[0]) != len(img2[0]):
@@ -94,3 +96,58 @@ def register_lines(img,lines):
             else:
                 cv2.line(img, (x1,y1), (x2,y2), (0,0,0), 2)
     return img,reg
+
+def detect_horizon_angle(mask, scharr=False):
+    # set the kernel size, depending on whether we are using the Sobel
+    # operator of the Scharr operator, then compute the gradients along
+    # the x and y axis, respectively
+
+    # print(mask.shape)
+    mask_height = mask.shape[0]
+    mask_width = mask.shape[1]
+    ksize = -1 if scharr else 3
+    gX = cv2.Sobel(mask, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=ksize)
+    gY = cv2.Sobel(mask, ddepth=cv2.CV_32F, dx=0, dy=1, ksize=ksize)
+
+    # the gradient magnitude images are now of the floating point data
+    # type, so we need to take care to convert them back a to unsigned
+    # 8-bit integer representation so other OpenCV functions can operate
+    # on them and visualize them
+
+    gX = cv2.convertScaleAbs(gX)
+    gY = cv2.convertScaleAbs(gY)
+
+    # combine the gradient representations into a single image
+    combined = cv2.addWeighted(gX, 0.5, gY, 0.5, 0)
+    
+    # show our output images
+    # cv2.imshow("Mask", mask)
+    # cv2.imshow("Sobel/Scharr Combined", combined)
+    # cv2.waitKey(0)
+
+    # Compute the angle of the horizon with linear regression
+    points_x = []
+    points_y = []
+    for i in range(mask_height):
+        for j in range(mask_width):
+            if combined[i][j] > 0:
+                points_x.append(j)
+                points_y.append(i)
+
+    if len(points_x) == 0:
+        return None
+    else:
+        X = np.array(points_x).reshape(-1, 1)
+        Y = np.array(points_y)
+        model = LinearRegression(n_jobs=-1).fit(X, Y)
+        return atan(model.coef_[0]) * 180 / pi
+
+def get_test_mask_horizontal(shape=(448, 800)):
+    mask = np.zeros(shape, dtype = "uint8")
+    mask[shape[0]//2:, :] = 255
+    return mask
+
+def get_test_mask_vertical(shape=(448, 800)):
+    mask = np.zeros(shape, dtype = "uint8")
+    mask[:, shape[1]//2:] = 255
+    return mask
