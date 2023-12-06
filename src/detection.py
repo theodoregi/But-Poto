@@ -91,7 +91,7 @@ def main_detection(image_name):
     img_color2 = rotate_image(img_color2, -horizon_angle)[0]
 
     display(img_color2)
-    return (xmax, xmin, ymax, ymin)
+    return xmax, xmin, ymax, ymin, nH, nW
 
 if __name__ == '__main__':
     img_name = 'log1/001-rgb.png'
