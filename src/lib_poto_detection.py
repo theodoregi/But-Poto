@@ -1,4 +1,5 @@
 from math import *
+import sys
 import cv2
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -12,7 +13,7 @@ def raise_error_size_diff(img1,img2):
 
 def adaptative_binarization(img):
     m = max(2*np.median(img), np.mean(img))
-    print(m)
+    # print(m)
     ret, bin = cv2.threshold(img, m, 255, cv2.THRESH_BINARY)
     for i in range(len(img)):
         for j in range(len(img[i])):
@@ -174,4 +175,7 @@ def rotate_image(image, angle):
     M[1, 2] += (nH / 2) - cY
     
     # perform the actual rotation and return the image
-    return cv2.warpAffine(image, M, (nW, nH)), nW, nH
+    return cv2.warpAffine(image, M, (nW, nH)), nW-w, nH-h
+
+if __name__ == "__main__" :
+    sys.exit(0)
