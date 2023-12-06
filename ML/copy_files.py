@@ -52,4 +52,3 @@ if __name__ == '__main__':
     copy_image_files('log3')
     copy_image_files('log4')
     sys.exit(0)
-
