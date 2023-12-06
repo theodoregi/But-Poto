@@ -1,5 +1,6 @@
 import cv2
 from detection import main_detection
+from lib_poto_detection import draw_rectangle
 
 def compute_goal_surface(x_max, x_min, y_max, y_min):
     # compute surface
@@ -12,11 +13,11 @@ def get_manual_goal_position(image_name):
 
     def choosePoints(event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
-            cv2.circle(image, (x, y), 5, (255,0,0), -1)
+            cv2.circle(image, (x, y), 5, (0,255,0), -1)
             print(f'{x}, {y}')
             points.append((x,y))
     points = []
-    image = cv2.imread('./data/'+ image_name, cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread('./data/' + image_name, cv2.IMREAD_GRAYSCALE)
     cv2.imshow('image', image)
     cv2.setMouseCallback('image', choosePoints)
     cv2.imshow('image', image)
@@ -35,6 +36,13 @@ def main_compute_goal_surface(image_name):
     detected_surface = compute_goal_surface(x_max_det, x_min_det, y_max_det, y_min_det)
     print("Manual surface: ", manual_surface)
     print("Detected surface: ", detected_surface)
+    # Affichage des surfaces pour visualiser la différence
+    image = cv2.imread('./data/' + im_name, cv2.IMREAD_COLOR)
+    image = draw_rectangle(image, x_min_manu, y_min_manu, x_max_manu, y_max_manu, 0, 0, 255)
+    image = draw_rectangle(image, x_min_det, y_min_det, x_max_det, y_max_det, 255, 0, 0)
+    cv2.imshow('image', image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     img_name = "log1/020-rgb.png"
