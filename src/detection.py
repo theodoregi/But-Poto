@@ -3,12 +3,12 @@ from lib_poto_detection import *
 #import prediction from ../ML/prediction.py
 from prediction import create_mask
 
-img_name = 'log1/020-rgb.png'
 MASK_GENERATION_REPO = './data/mask_generation/'
-create_mask(img_name, MASK_GENERATION_REPO)
-mask_name = MASK_GENERATION_REPO+img_name[5:]
 
-def main():
+def main_detection(image_name):
+    create_mask(image_name, MASK_GENERATION_REPO)
+    mask_name = MASK_GENERATION_REPO+image_name[5:]
+
     # pré traitement
     er = 2
     erosion_size = (er,er)
@@ -19,12 +19,12 @@ def main():
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
 
-    img_grey1 = cv2.imread('./data/'+img_name, 0)
+    img_grey1 = cv2.imread('./data/'+image_name, 0)
     img_grey1 = cv2.morphologyEx(img_grey1, cv2.MORPH_CLOSE, kernel, iterations=1)
 
-    img_color1 = cv2.imread('./data/'+img_name, 1)
+    img_color1 = cv2.imread('./data/'+image_name, 1)
 
-    img_color2 = cv2.imread('./data/'+img_name, 1)
+    img_color2 = cv2.imread('./data/'+image_name, 1)
 
 
     # encore pré traitement
@@ -91,6 +91,7 @@ def main():
     return (xmax, xmin, ymax, ymin)
 
 if __name__ == '__main__':
-    main()
+    img_name = 'log1/020-rgb.png'
+    main_detection(img_name)
 
  
