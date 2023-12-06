@@ -1,14 +1,21 @@
 from lib_poto_detection import *
 
+#import prediction from ../ML/prediction.py
+from prediction import create_mask
+
 img_name = 'log1/020-rgb.png'
+MASK_GENERATION_REPO = './data/mask_generation/'
+create_mask(img_name, MASK_GENERATION_REPO)
+mask_name = MASK_GENERATION_REPO+img_name[5:]
 
 def main():
+    # pré traitement
     er = 2
     erosion_size = (er,er)
     di = 2
     dilate_size = (di,di)
-    cl = 3
-    closing_size = (di,di)
+    cl = 2
+    closing_size = (cl,cl)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
 
@@ -20,7 +27,7 @@ def main():
     img_color2 = cv2.imread('./data/'+img_name, 1)
 
 
-    #pré traitement
+    # encore pré traitement
     for i in range(5):
         img_grey1 = adaptative_binarization(img_grey1)
 
@@ -55,7 +62,7 @@ def main():
     img_color1=keep_only_color(img_color1,img_grey1,255,0,0)
 
     #### on crée et applique le masque
-    mask = cv2.imread('./data/mask/'+img_name, 0)
+    mask = cv2.imread(mask_name, 0)
     mask = rotate_image(mask, horizon_angle)
     img_color1=apply_mask(img_color1,mask)
 
@@ -83,4 +90,7 @@ def main():
     display(img_color2)
     return (xmax, xmin, ymax, ymin)
 
-main()
+if __name__ == '__main__':
+    main()
+
+ 
