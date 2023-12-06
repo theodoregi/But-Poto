@@ -81,6 +81,6 @@ def main():
     img_color2 = rotate_image(img_color2, -horizon_angle)
 
     display(img_color2)
-    return
+    return (xmax, xmin, ymax, ymin)
 
 main()
