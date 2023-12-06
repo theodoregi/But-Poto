@@ -47,7 +47,7 @@ def main_detection(image_name):
 
     #### on calcule l'angle de l'horizon
     horizon_angle = detect_horizon_angle(img_grey1)
-    print(horizon_angle)
+    print("angle :", horizon_angle)
 
     nW = 0
     nH = 0
@@ -94,7 +94,7 @@ def main_detection(image_name):
     return xmax, xmin, ymax, ymin, nH, nW
 
 if __name__ == '__main__':
-    img_name = 'log3/005-rgb.png'
+    img_name = 'log1/001-rgb.png'
     main_detection(img_name)
 
  
