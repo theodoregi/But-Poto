@@ -26,7 +26,7 @@ def get_manual_goal_position(image):
 
 def main_compute_goal_surface(image_name):
     # Get goal position from detection
-    [x_max_det, x_min_det, y_max_det, y_min_det] = main_detection(image_name)
+    [x_max_det, x_min_det, y_max_det, y_min_det, image] = main_detection(image_name)
     # Get goal position from manual selection
     points = get_manual_goal_position(image)
     x_max_manu = max(points[0][0], points[1][0], points[2][0], points[3][0])
@@ -42,9 +42,8 @@ def main_compute_goal_surface(image_name):
     print("Erreur: ", erreur)
     # Display surfaces to see differences
     image = cv2.imread('./data/' + img_name, cv2.IMREAD_COLOR)
-    print(width_decalage, height_decalage)
     image = draw_rectangle(image, x_min_manu, y_min_manu, x_max_manu, y_max_manu, 0, 0, 255)
-    image = draw_rectangle(image, x_min_det - width_decalage, y_min_det - height_decalage, x_max_det - width_decalage, y_max_det - height_decalage, 255, 0, 0)
+    image = draw_rectangle(image, x_min_det, y_min_det, x_max_det, y_max_det, 255, 0, 0)
     cv2.imshow('image', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

@@ -1,4 +1,5 @@
 from lib_poto_detection import *
+from copy import deepcopy
 
 #import prediction from ../ML/prediction.py
 from prediction import create_mask
@@ -23,7 +24,6 @@ def main_detection(image_name):
     img_grey1 = cv2.morphologyEx(img_grey1, cv2.MORPH_CLOSE, kernel, iterations=1)
 
     img_color1 = cv2.imread('./data/'+image_name, 1)
-
     img_color2 = cv2.imread('./data/'+image_name, 1)
 
 
@@ -53,7 +53,8 @@ def main_detection(image_name):
     img_grey1 = rotate_image(img_grey1, horizon_angle)
     img_color1 = rotate_image(img_color1, horizon_angle)[0]
     img_color2 = rotate_image(img_color2, horizon_angle)[0]
-    img_color_to_return = img_color2.__deepcopy__()
+    img_color_to_return = deepcopy(img_color1)
+    img_color_to_return = rotate_image(img_color_to_return, -horizon_angle)[0]
 
     #### on recherche les lignes et on les copie sur img_color1
     img_color1,lines=search_and_draw_lines(img_grey1,img_color1,1.3,np.pi,100,20,1)
