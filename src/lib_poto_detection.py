@@ -10,7 +10,6 @@ def raise_error_size_diff(img1,img2):
     return
     
 
-
 def adaptative_binarization(img):
     m = max(2*np.median(img), np.mean(img))
     # print(m)
@@ -98,6 +97,7 @@ def register_lines(img,lines):
                 cv2.line(img, (x1,y1), (x2,y2), (0,0,0), 2)
     return img,reg
 
+
 def detect_horizon_angle(mask, scharr=False):
     # set the kernel size, depending on whether we are using the Sobel
     # operator of the Scharr operator, then compute the gradients along
@@ -143,10 +143,12 @@ def detect_horizon_angle(mask, scharr=False):
         model = LinearRegression(n_jobs=-1).fit(X, Y)
         return atan(model.coef_[0]) * 180 / pi
 
+
 def get_test_mask_horizontal(shape=(448, 800)):
     mask = np.zeros(shape, dtype = "uint8")
     mask[shape[0]//2:, :] = 255
     return mask
+
 
 def get_test_mask_vertical(shape=(448, 800)):
     mask = np.zeros(shape, dtype = "uint8")
@@ -176,6 +178,8 @@ def rotate_image(image, angle):
     
     # perform the actual rotation and return the image
     return cv2.warpAffine(image, M, (nW, nH)), nW-w, nH-h
+
+
 
 if __name__ == "__main__" :
     sys.exit(0)
