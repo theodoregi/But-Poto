@@ -49,10 +49,8 @@ def main_detection(image_name):
     horizon_angle = detect_horizon_angle(img_grey1)
     print("angle :", horizon_angle)
 
-    nW = 0
-    nH = 0
     #### on effectue une rotation de l'image
-    img_grey1,nW,nH = rotate_image(img_grey1, horizon_angle)
+    img_grey1 = rotate_image(img_grey1, horizon_angle)
     img_color1 = rotate_image(img_color1, horizon_angle)[0]
     img_color2 = rotate_image(img_color2, horizon_angle)[0]
 
@@ -91,7 +89,7 @@ def main_detection(image_name):
     img_color2 = rotate_image(img_color2, -horizon_angle)[0]
 
     display(img_color2)
-    return xmax, xmin, ymax, ymin, nH, nW
+    return xmax, xmin, ymax, ymin
 
 if __name__ == '__main__':
     img_name = 'log1/001-rgb.png'

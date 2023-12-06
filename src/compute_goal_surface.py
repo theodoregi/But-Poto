@@ -9,7 +9,7 @@ def compute_goal_surface(x_max, x_min, y_max, y_min):
     return surface
 
 
-def get_manual_goal_position(image_name):
+def get_manual_goal_position(image):
 
     def choosePoints(event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
@@ -17,7 +17,6 @@ def get_manual_goal_position(image_name):
             print(f'{x}, {y}')
             points.append((x,y))
     points = []
-    image = cv2.imread('./data/' + image_name, cv2.IMREAD_GRAYSCALE)
     cv2.imshow('image', image)
     cv2.setMouseCallback('image', choosePoints)
     cv2.imshow('image', image)
@@ -27,9 +26,9 @@ def get_manual_goal_position(image_name):
 
 def main_compute_goal_surface(image_name):
     # Get goal position from detection
-    [x_max_det, x_min_det, y_max_det, y_min_det, nH, nW] = main_detection(image_name)
+    [x_max_det, x_min_det, y_max_det, y_min_det] = main_detection(image_name)
     # Get goal position from manual selection
-    points = get_manual_goal_position(image_name)
+    points = get_manual_goal_position(image)
     x_max_manu = max(points[0][0], points[1][0], points[2][0], points[3][0])
     x_min_manu = min(points[0][0], points[1][0], points[2][0], points[3][0])
     y_max_manu = max(points[0][1], points[1][1], points[2][1], points[3][1])
@@ -43,9 +42,9 @@ def main_compute_goal_surface(image_name):
     print("Erreur: ", erreur)
     # Display surfaces to see differences
     image = cv2.imread('./data/' + img_name, cv2.IMREAD_COLOR)
-    print(nW, nH)
-    # image = draw_rectangle(image, x_min_manu, y_min_manu, x_max_manu, y_max_manu, 0, 0, 255)
-    image = draw_rectangle(image, x_min_det + nW, y_min_det + nH, x_max_det + nW, y_max_det + nH, 255, 0, 0)
+    print(width_decalage, height_decalage)
+    image = draw_rectangle(image, x_min_manu, y_min_manu, x_max_manu, y_max_manu, 0, 0, 255)
+    image = draw_rectangle(image, x_min_det - width_decalage, y_min_det - height_decalage, x_max_det - width_decalage, y_max_det - height_decalage, 255, 0, 0)
     cv2.imshow('image', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
