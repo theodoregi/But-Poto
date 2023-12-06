@@ -24,4 +24,4 @@ def create_mask(img_name, path_to_save):
     Image.fromarray(y_pred).save(path_to_save+img_name[4:])
     return
 
-# create_mask('log1/001-rgb.png', './ML/result/')
+create_mask('log1/001-rgb.png', './ML/result/')

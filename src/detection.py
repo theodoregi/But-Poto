@@ -47,11 +47,14 @@ def main_detection(image_name):
 
     #### on calcule l'angle de l'horizon
     horizon_angle = detect_horizon_angle(img_grey1)
+    print(horizon_angle)
 
+    nW = 0
+    nH = 0
     #### on effectue une rotation de l'image
-    img_grey1 = rotate_image(img_grey1, horizon_angle)
-    img_color1 = rotate_image(img_color1, horizon_angle)
-    img_color2 = rotate_image(img_color2, horizon_angle)
+    img_grey1,nW,nH = rotate_image(img_grey1, horizon_angle)
+    img_color1 = rotate_image(img_color1, horizon_angle)[0]
+    img_color2 = rotate_image(img_color2, horizon_angle)[0]
 
     #### on recherche les lignes et on les copie sur img_color1
     img_color1,lines=search_and_draw_lines(img_grey1,img_color1,1.3,np.pi,100,20,1)
@@ -63,7 +66,7 @@ def main_detection(image_name):
 
     #### on crée et applique le masque
     mask = cv2.imread(mask_name, 0)
-    mask = rotate_image(mask, horizon_angle)
+    mask = rotate_image(mask, horizon_angle)[0]
     img_color1=apply_mask(img_color1,mask)
 
     #### on garde la couleur bleue et on l'applique à img_color1. Sinon, on met du noir.
@@ -85,13 +88,13 @@ def main_detection(image_name):
     img_color2 = copy_and_keep(img_grey1, img_color1, img_color2, 255, 0, 0)
 
     #### on rétablit la rotation originale
-    img_color2 = rotate_image(img_color2, -horizon_angle)
+    img_color2 = rotate_image(img_color2, -horizon_angle)[0]
 
     display(img_color2)
     return (xmax, xmin, ymax, ymin)
 
 if __name__ == '__main__':
-    img_name = 'log1/020-rgb.png'
+    img_name = 'log3/005-rgb.png'
     main_detection(img_name)
 
  
