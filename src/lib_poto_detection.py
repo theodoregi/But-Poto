@@ -66,16 +66,16 @@ def draw_rectangle(img, xmin, ymin, xmax, ymax, blue, green, red):
     return img
 
 
-def copy_and_keep(img_base, img_w_draw, img_color, blue, green,red):
+def copy_and_keep(img_base, img_w_draw, img_res, blue, green,red):
     raise_error_size_diff(img_base,img_w_draw)
-    raise_error_size_diff(img_base,img_color)
+    raise_error_size_diff(img_base,img_res)
     for i in range(len(img_base)):
         for j in range(len(img_base[i])):
             if img_w_draw[i][j][0] == blue and img_w_draw[i][j][1] == green and img_w_draw[i][j][2] == red:
-                img_color[i][j] = img_w_draw[i][j]
+                img_res[i][j] = img_w_draw[i][j]
             else :
-                img_color[i][j] = img_base[i][j]
-    return img_color
+                img_res[i][j] = img_base[i][j]
+    return img_res
 
 
 def register_lines(img,lines):
@@ -178,5 +178,6 @@ def rotate_image(image, angle):
     
     # perform the actual rotation and return the image
     return cv2.warpAffine(image, M, (nW, nH))
+
 if __name__ == "__main__" :
     sys.exit(0)
