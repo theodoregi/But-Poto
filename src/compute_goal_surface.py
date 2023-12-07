@@ -28,6 +28,7 @@ def main_compute_goal_surface(image_name):
     # Get goal position from detection
     [x_max_det, x_min_det, y_max_det, y_min_det, image, horizon_angle] = main_detection(image_name)
     image = rotate_image(image, horizon_angle)
+    
     # Get goal position from manual selection
     points = get_manual_goal_position(image)
     if len(points) != 4:
@@ -37,19 +38,31 @@ def main_compute_goal_surface(image_name):
     x_min_manu = min(points[0][0], points[1][0], points[2][0], points[3][0])
     y_max_manu = max(points[0][1], points[1][1], points[2][1], points[3][1])
     y_min_manu = min(points[0][1], points[1][1], points[2][1], points[3][1])
+    # print("Manual points :", x_min_manu, y_min_manu, x_max_manu, y_max_manu)
+    # print("Detected points :",x_min_det, y_min_det, x_max_det, y_max_det)
+    
     # Compute surfaces
     manual_surface = compute_goal_surface(x_max_manu, x_min_manu, y_max_manu, y_min_manu)
     detected_surface = compute_goal_surface(x_max_det, x_min_det, y_max_det, y_min_det)
-    print("Manual surface: ", manual_surface)
-    print("Detected surface: ", detected_surface)
+    # print("Manual surface: ", manual_surface)
+    # print("Detected surface: ", detected_surface)
     erreur = abs(detected_surface - manual_surface) / manual_surface * 100
-    print("Erreur: ", erreur)
-    # Display surfaces to see differences
-    print("Manual points :", x_min_manu, y_min_manu, x_max_manu, y_max_manu)
-    print("Detected points :",x_min_det, y_min_det, x_max_det, y_max_det)
+    print("Surface value error (%): ", erreur)
+    
+    # Draw rectangles
     image = draw_rectangle(image, x_min_det, y_min_det, x_max_det, y_max_det, 255, 0, 0)
     image = draw_rectangle(image, x_min_manu, y_min_manu, x_max_manu, y_max_manu, 0, 0, 255)
     image = rotate_image(image, -horizon_angle)
+
+    # compute the intersection of the two rectangles
+    xA = max(x_min_det, x_min_manu)
+    yA = max(y_min_det, y_min_manu)
+    xB = min(x_max_det, x_max_manu)
+    yB = min(y_max_det, y_max_manu)
+    # compute the area of intersection rectangle
+    interArea = max(0, xB - xA + 1) * max(0, yB - yA + 1)
+    print("Surface intersection error (%): ", abs(1-interArea/manual_surface)*100)
+
     cv2.imshow('image', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

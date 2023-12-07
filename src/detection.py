@@ -1,7 +1,5 @@
 from lib_poto_detection import *
 from copy import deepcopy
-
-#import prediction from ../ML/prediction.py
 from prediction import create_mask
 
 MASK_GENERATION_REPO = './data/mask_generation/'
@@ -18,19 +16,22 @@ def main_detection(image_name, debug = 0):
     create_mask(image_name, MASK_GENERATION_REPO)
     mask_name = MASK_GENERATION_REPO+image_name[5:]
 
-    # pré traitement
+    # définition des paramètres de pré traitement
     er = 2
     erosion_size = (er,er)
     di = 2
     dilate_size = (di,di)
     cl = 2
     closing_size = (cl,cl)
-    preprocessing = er+di+cl
 
     kernel_closing = cv2.getStructuringElement(cv2.MORPH_RECT, closing_size)
-    kernel_dilate = cv2.getStructuringElement(cv2.MORPH_RECT, dilate_size)
+    kernel_dilate  = cv2.getStructuringElement(cv2.MORPH_RECT, dilate_size)
     kernel_erosion = cv2.getStructuringElement(cv2.MORPH_RECT, erosion_size)
 
+    preprocessing = er+di+cl
+
+
+    # pré traitement
     img_grey = cv2.imread('./data/'+image_name, 0)
     img_grey = cv2.morphologyEx(img_grey, cv2.MORPH_CLOSE, kernel_closing, iterations=1)
 
@@ -46,7 +47,7 @@ def main_detection(image_name, debug = 0):
         img_grey = cv2.equalizeHist(img_grey)
         img_grey = cv2.erode(img_grey, kernel_erosion, iterations=1)
 
-    ####################
+    ########################################################################################
 
     #### on calcule l'angle de l'horizon
     horizon_angle = detect_horizon_angle(img_grey)
@@ -103,6 +104,7 @@ def main_detection(image_name, debug = 0):
     # display(img_base) # uncomment to see the original image
     display(img_color)
     return xmax, xmin, ymax, ymin, img_base, horizon_angle
+
 
 if __name__ == '__main__':
     img_name = 'log1/015-rgb.png'
