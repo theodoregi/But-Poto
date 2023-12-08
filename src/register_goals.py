@@ -26,7 +26,6 @@ def main_register_goals(image_name):
     mask_name = MASK_GENERATION_REPO+image_name[5:]
     mask = cv2.imread(mask_name, 0)
     horizon_angle = detect_horizon_angle(mask)//2
-    print("Horizon angle: ", horizon_angle)
 
     image = cv2.imread('./data/'+image_name, 1)
     image = rotate_image(image, horizon_angle)
@@ -50,7 +49,6 @@ def main_register_goals(image_name):
     # wait for key : if not OK, just return
     response = query_yes_no("Is the goal placed correctly?")
     if response:
-        print(horizon_angle)
         register_new_goal(GOALS_REGISTRY_FILE, image_name, horizon_angle, x_max_manu, x_min_manu, y_max_manu, y_min_manu)
         print("Goal registered successfully.")
     else:
@@ -85,7 +83,8 @@ def register_new_goal(registry_path, name, horizon_angle, xmax, xmin, ymax, ymin
                 return
     # append the new line to the file
     with open(registry_path, "a") as file:
-        file.write(f"{name},{horizon_angle},{xmax},{xmin},{ymax},{ymin}\n")
+        file.write(f"{name},{horizon_angle},{xmax},{xmin},{ymax},{ymin}")
+        file.write('\n')
     return
 
 def get_last_goal(registry_path):

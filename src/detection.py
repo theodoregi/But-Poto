@@ -10,7 +10,7 @@ NUMBER_OF_LINES = 100 # # 100
 WIDTH_RESEARCH = 1.3 # # 1.3
 ANGLE_RESOLUTION = np.pi # # pi
 
-def main_detection(image_name, debug = 0):
+def main_detection(image_name, flag_display = 1, flag_debug = 0):
     create_mask(image_name, MASK_GENERATION_REPO)
     mask_name = MASK_GENERATION_REPO+image_name[5:]
     mask = cv2.imread(mask_name, 0)
@@ -50,7 +50,8 @@ def main_detection(image_name, debug = 0):
 
     #### on calcule l'angle de l'horizon
     horizon_angle = detect_horizon_angle(mask)//2
-    print("angle :", horizon_angle)
+    if flag_display:
+        print("Horizon angle :", horizon_angle)
 
     #### on effectue une rotation de l'image
     img_grey = rotate_image(img_grey, horizon_angle) 
@@ -62,7 +63,7 @@ def main_detection(image_name, debug = 0):
     
     #### on garde la couleur bleue et on l'applique à img_grey_3_channels. Sinon, on garde du niveau de gris
     img_grey_3_channels=keep_only_color(img_grey_3_channels,img_grey,255,0,0)
-    if debug:
+    if flag_debug:
         display(img_grey_3_channels)
 
     #### on crée et applique le masque (soustraction de dilatation et erosion)
@@ -72,7 +73,7 @@ def main_detection(image_name, debug = 0):
     eroded_mask = cv2.erode(eroded_mask, kernel_erosion, iterations=EROSION_ITERATIONS)
     dilated_mask = cv2.dilate(dilated_mask, kernel_dilate, iterations=DILATION_ITERATIONS)
     sub_mask = cv2.subtract(dilated_mask, eroded_mask)
-    if debug:
+    if flag_debug:
         display(sub_mask)
     
     img_grey_3_channels=apply_mask(img_grey_3_channels,sub_mask)
@@ -82,7 +83,7 @@ def main_detection(image_name, debug = 0):
     img_black = np.zeros((size_x, size_y, 3), dtype = "uint8")
     img_black = rotate_image(img_black, horizon_angle)
     img_black=keep_only_color(img_black,img_grey_3_channels,255,0,0)
-    if debug:
+    if flag_debug:
             display(img_black)
 
     #### on recherche les lignes et on les copie sur img_black
@@ -94,13 +95,15 @@ def main_detection(image_name, debug = 0):
     ymax = max(max(reg, key=lambda x: x[1][1])[1][1], max(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
     ymin = min(min(reg, key=lambda x: x[1][1])[1][1], min(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
     img_color=draw_rectangle(img_color, xmin, ymin, xmax, ymax, 255, 0, 0)
-    print(xmax, xmin, ymax, ymin)
+    if flag_display:
+        print("Detected points (xmax, xmin, ymax, ymin):", xmax, xmin, ymax, ymin)
 
     #### on rétablit la rotation originale
     img_color = rotate_image(img_color, -horizon_angle)
 
     # display(img_base)
-    display(img_color)
+    if flag_display:
+        display(img_color)
     return xmax, xmin, ymax, ymin, img_base, horizon_angle
 
 
