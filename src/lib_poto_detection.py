@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
+MASK_GENERATION_REPO = './data/mask_generation/'
+
 def raise_error_size_diff(img1,img2):
     if len(img1) != len(img2) or len(img1[0]) != len(img2[0]):
         raise ValueError("The two images must have the same size but have sizes {}x{} and {}x{}".format(len(img1),len(img1[0]),len(img2),len(img2[0])))
@@ -23,8 +25,8 @@ def adaptative_binarization(img):
     return img
 
 
-def display(img):
-    cv2.imshow('image', img)
+def display(img, text="image"):
+    cv2.imshow(text, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return

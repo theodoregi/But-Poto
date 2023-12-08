@@ -2,8 +2,6 @@ from lib_poto_detection import *
 from copy import deepcopy
 from prediction import create_mask
 
-MASK_GENERATION_REPO = './data/mask_generation/'
-
 # # MODIFIER CE PARAMETRES POUR RENDRE LA DETECTION MEILLEURE
 EROSION_ITERATIONS = 30 # # 30
 DILATION_ITERATIONS = 30 # # 30
@@ -15,6 +13,7 @@ ANGLE_RESOLUTION = np.pi # # pi
 def main_detection(image_name, debug = 0):
     create_mask(image_name, MASK_GENERATION_REPO)
     mask_name = MASK_GENERATION_REPO+image_name[5:]
+    mask = cv2.imread(mask_name, 0)
 
     # définition des paramètres de pré traitement
     er = 2
@@ -50,7 +49,7 @@ def main_detection(image_name, debug = 0):
     ########################################################################################
 
     #### on calcule l'angle de l'horizon
-    horizon_angle = detect_horizon_angle(img_grey)
+    horizon_angle = detect_horizon_angle(mask)//2
     print("angle :", horizon_angle)
 
     #### on effectue une rotation de l'image
@@ -67,7 +66,6 @@ def main_detection(image_name, debug = 0):
         display(img_grey_3_channels)
 
     #### on crée et applique le masque (soustraction de dilatation et erosion)
-    mask = cv2.imread(mask_name, 0)
     mask = rotate_image(mask, horizon_angle)
     eroded_mask = deepcopy(mask)
     dilated_mask = deepcopy(mask)

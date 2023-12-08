@@ -1,6 +1,7 @@
 ./ML/image/*
 ./ML/mask/*
 *.png
+*.csv
 
 
 
