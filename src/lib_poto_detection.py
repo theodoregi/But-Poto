@@ -143,7 +143,7 @@ def detect_horizon_angle(mask, scharr=False):
         X = np.array(points_x).reshape(-1, 1)
         Y = np.array(points_y)
         model = LinearRegression(n_jobs=-1).fit(X, Y)
-        return atan(model.coef_[0]) * 180 / pi
+        return atan(model.coef_[0]) * 180 / pi //2 # //2 pour réduire la valeur de l'angle + AVOIR UNE VALEUR ENTIERE
 
 
 def get_test_mask_horizontal(shape=(448, 800)):

@@ -49,7 +49,7 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
     ########################################################################################
 
     #### on calcule l'angle de l'horizon
-    horizon_angle = detect_horizon_angle(mask)//2
+    horizon_angle = detect_horizon_angle(mask)
     if flag_display:
         print("Horizon angle :", horizon_angle)
 

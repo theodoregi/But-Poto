@@ -25,7 +25,7 @@ def main_register_goals(image_name):
     create_mask(image_name, MASK_GENERATION_REPO)
     mask_name = MASK_GENERATION_REPO+image_name[5:]
     mask = cv2.imread(mask_name, 0)
-    horizon_angle = detect_horizon_angle(mask)//2
+    horizon_angle = detect_horizon_angle(mask)
 
     image = cv2.imread('./data/'+image_name, 1)
     image = rotate_image(image, horizon_angle)
@@ -67,7 +67,7 @@ def create_register_file(registry_path):
 def register_new_goal(registry_path, name, horizon_angle, xmax, xmin, ymax, ymin):
     if not os.path.exists(registry_path):
         print("Registry does not exist.")
-        return
+        raise FileNotFoundError
     # read the contents of the file
     with open(registry_path, "r") as file:
         lines = file.readlines()
@@ -90,29 +90,29 @@ def register_new_goal(registry_path, name, horizon_angle, xmax, xmin, ymax, ymin
 def get_last_goal(registry_path):
     if not os.path.exists(registry_path):
         print("Registry does not exist.")
-        return
+        raise FileNotFoundError
     with open(registry_path, "r") as file:
         lines = file.readlines()
-    #get last non empty line 
-    for i in range(len(lines)-1, -1, -1):
-        if lines[i] != "\n":
-            last_line_index = i
-            break
-    last_line = lines[last_line_index]
-    line_parts = last_line.strip().split(",")
-    if len(line_parts) == 6:
-        file_name, horizon_angle, x_max, x_min, y_max, y_min = line_parts
-        return file_name
+    if len(lines) > 0:
+        for i in range(len(lines)-1, -1, -1):
+            if lines[i] != "\n":
+                last_line_index = i
+                break
+        last_line = lines[last_line_index]
+        line_parts = last_line.strip().split(",")
+        if len(line_parts) == 6:
+            file_name, horizon_angle, x_max, x_min, y_max, y_min = line_parts
+            return file_name
     return
 
-def get_next_goal(registry_path):
+def get_next_goal(registry_path, default="log1/011-rgb.png"):
     if not os.path.exists(registry_path):
         print("Registry does not exist.")
-        return
+        raise FileNotFoundError
     last_goal = get_last_goal(registry_path)
     print("Last image: ", last_goal)
     if last_goal is None:
-        return
+        return default
     last_num = last_goal[5:8]
     last_num = int(last_num)
     last_num += 1
