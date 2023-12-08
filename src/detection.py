@@ -4,7 +4,7 @@ from prediction import create_mask
 
 MASK_GENERATION_REPO = './data/mask_generation/'
 
-# # MODIFIABLE PARAMETERS TO MAKE THE DETECTION BETTER
+# # MODIFIER CE PARAMETRES POUR RENDRE LA DETECTION MEILLEURE
 EROSION_ITERATIONS = 30 # # 30
 DILATION_ITERATIONS = 30 # # 30
 MIN_LINE_LENGTH = 50 # # 50
@@ -101,7 +101,7 @@ def main_detection(image_name, debug = 0):
     #### on rétablit la rotation originale
     img_color = rotate_image(img_color, -horizon_angle)
 
-    # display(img_base) # uncomment to see the original image
+    # display(img_base)
     display(img_color)
     return xmax, xmin, ymax, ymin, img_base, horizon_angle
 
