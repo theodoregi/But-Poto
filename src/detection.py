@@ -109,4 +109,4 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
 
 if __name__ == '__main__':
     img_name = 'log1/015-rgb.png'
-    main_detection(img_name,1)
+    main_detection(img_name,flag_display = 1, flag_debug = 0)

@@ -13,16 +13,20 @@ def raise_error_size_diff(img1,img2):
     
 
 def adaptative_binarization(img):
-    m = max(2*np.median(img), np.mean(img))
-    # print(m)
-    ret, bin = cv2.threshold(img, m, 255, cv2.THRESH_BINARY)
-    for i in range(len(img)):
-        for j in range(len(img[i])):
-            if bin[i][j] == 255:
-                img[i][j] = img[i][j]
-            else:
-                img[i][j] = 0
+    m = max(2 * np.median(img), np.mean(img))
+    bin_img = (img > m).astype(np.uint8) * 255
+    img = img * (bin_img == 255)
     return img
+    # m = max(2*np.median(img), np.mean(img))
+    # # print(m)
+    # ret, bin = cv2.threshold(img, m, 255, cv2.THRESH_BINARY)
+    # for i in range(len(img)):
+    #     for j in range(len(img[i])):
+    #         if bin[i][j] == 255:
+    #             img[i][j] = img[i][j]
+    #         else:
+    #             img[i][j] = 0
+    # return img
 
 
 def display(img, text="image"):
@@ -43,20 +47,23 @@ def search_and_draw_lines(img_search,img_draw,width_research,angle,line_number,m
 
 def apply_mask(img, mask): # also keep the chosen color
     raise_error_size_diff(img,mask)
-    for i in range(len(mask)):
-        for j in range(len(mask[i])):
-            if mask[i][j] == 0:
-                img[i][j] = [0,0,0]
-    return img
+    img_array = np.array(img)
+    rm_mask = mask == 0
+    img_array[rm_mask] = [0, 0, 0]
+    return img_array
 
 
 def keep_only_color(img,img_replace,blue,green,red):
     raise_error_size_diff(img,img_replace)
-    for i in range(len(img)):
-        for j in range(len(img[i])):
-            if img[i][j][0] != blue or img[i][j][1] != green or img[i][j][2] != red:
-                img[i][j] = img_replace[i][j]
-    return img
+    img_array = np.array(img)
+    img_replace_array = np.array(img_replace)
+    if img_replace_array.ndim == 2:
+        img_replace_array = np.expand_dims(img_replace_array, axis=-1)
+    if img_replace_array.shape[-1] == 1:
+        img_replace_array = np.repeat(img_replace_array, 3, axis=-1)
+    mask = np.logical_or.reduce(img_array != [blue, green, red], axis=2)
+    img_array[mask] = img_replace_array[mask]
+    return img_array
 
 
 def draw_rectangle(img, xmin, ymin, xmax, ymax, blue, green, red):
@@ -71,12 +78,10 @@ def draw_rectangle(img, xmin, ymin, xmax, ymax, blue, green, red):
 def copy_and_keep(img_base, img_w_draw, img_res, blue, green,red):
     raise_error_size_diff(img_base,img_w_draw)
     raise_error_size_diff(img_base,img_res)
-    for i in range(len(img_base)):
-        for j in range(len(img_base[i])):
-            if img_w_draw[i][j][0] == blue and img_w_draw[i][j][1] == green and img_w_draw[i][j][2] == red:
-                img_res[i][j] = img_w_draw[i][j]
-            else :
-                img_res[i][j] = img_base[i][j]
+    img_w_draw_array = np.array(img_w_draw)
+    img_res_array = np.array(img_res)
+    mask = np.logical_and.reduce(img_w_draw_array == [blue, green, red], axis=2)
+    img_res_array[mask] = img_w_draw_array[mask]
     return img_res
 
 
