@@ -1,4 +1,4 @@
-Le but de ce projet est d'effectuer la détection de poteaux et de buts pour des robots jouant au football à partir des images reçues des caméras.
+L'objectif de ce projet est de détecter des poteaux (ainsi que les buts que forment ces poteaux) pour des robots jouant au football, à partir des images reçues de leurs caméras.
 
 L'objectif est de modéliser de manière précise, et si possible rapide, les cages.
 
