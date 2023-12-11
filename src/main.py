@@ -19,7 +19,6 @@ if __name__ == '__main__':
     if os.path.exists('./ML/result/'+image_name[5:]):
         os.remove('./ML/result/'+image_name[5:])
     mask_path=create_mask(image_name, './ML/result/')
-    print(mask_path)
     mask = imread(mask_path, 0)
     display(mask)
 

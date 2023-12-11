@@ -27,8 +27,8 @@ def create_mask(img_name, path_to_save):
     # save the result in ./ML/result
     if not os.path.exists(path_to_save):
         os.makedirs(path_to_save)
-    Image.fromarray(y_pred).save(path_to_save+img_name[4:])
-    return path_to_save+img_name[4:]
+    Image.fromarray(y_pred).save(path_to_save+img_name[5:])
+    return path_to_save+img_name[5:]
 
 
 def clear_all_masks(path):
