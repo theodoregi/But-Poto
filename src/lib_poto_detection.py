@@ -17,16 +17,6 @@ def adaptative_binarization(img):
     bin_img = (img > m).astype(np.uint8) * 255
     img = img * (bin_img == 255)
     return img
-    # m = max(2*np.median(img), np.mean(img))
-    # # print(m)
-    # ret, bin = cv2.threshold(img, m, 255, cv2.THRESH_BINARY)
-    # for i in range(len(img)):
-    #     for j in range(len(img[i])):
-    #         if bin[i][j] == 255:
-    #             img[i][j] = img[i][j]
-    #         else:
-    #             img[i][j] = 0
-    # return img
 
 
 def display(img, text="image"):

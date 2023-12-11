@@ -2,7 +2,7 @@ import os
 import cv2
 from detection import main_detection
 from lib_poto_detection import draw_rectangle, rotate_image
-from register_goals import GOALS_REGISTRY_FILE
+from register_goals import GOALS_REGISTRY_FILE, create_register_file
 
 ACCURACY_FILE = "./src/accuracy_registry.csv"
 
@@ -14,8 +14,8 @@ def main_compute_goal_surface(image_name, horizon_angle_manu, x_max_manu, x_min_
     # Get goal position from detection
     [x_max_det, x_min_det, y_max_det, y_min_det, image, horizon_angle] = main_detection(image_name,flag_display=False,flag_debug=False)
     if horizon_angle_manu != horizon_angle:
-        print("!!! ERROR IN HORIZON ANGLE DETECTION !!!")
-        print("    NOT THE SAME IN DETECTION/MANUAL")
+        print("!   ERROR IN HORIZON ANGLE DETECTION   !")
+        print("!   NOT THE SAME IN DETECTION/MANUAL   !")
         return
     
     image = rotate_image(image, horizon_angle)
@@ -75,8 +75,11 @@ def clear_accuracy_file(accuracy_path):
 
 def compute_all_goals_surface():
     clear_accuracy_file(ACCURACY_FILE)
+    create_register_file(GOALS_REGISTRY_FILE)
     with open(GOALS_REGISTRY_FILE, "r") as file:
         lines = file.readlines()
+        if (len(lines)==0):
+            print("Registry file is empty, please run 'register_goals.py' first.")
         for line in lines:
             line = line.strip()
             [image_name, horizon_angle, x_max, x_min, y_max, y_min] = line.split(",")
