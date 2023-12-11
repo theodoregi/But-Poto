@@ -1,6 +1,10 @@
-L'objectif de ce projet est de détecter des poteaux (ainsi que les buts que forment ces poteaux) pour des robots jouant au football, à partir des images reçues de leurs caméras.
+# Le but de ce projet consiste à mettre en œuvre la détection de poteaux, ainsi que la reconnaissance des buts formés par ces poteaux, à partir des images capturées par les caméras des robots participant au football. 
+L'objectif principal est de réaliser une modélisation précise et, dans la mesure du possible, rapide des cages.
 
-L'objectif est de modéliser de manière précise, et si possible rapide, les cages.
+Ce projet s'inscrit dans notre cursus en ingénierie informatique, plus particulièrement dans la spécialisation en robotique dispensée par l'ENSEIRB-MATMECA. 
+
+L'initiative provient de nos enseignants, qui sont également impliqués dans l'équipe Rhoban participant au concours de robotique RoboCup.
+RoboCup est une initiative internationale de recherche scientifique et de compétition qui vise à promouvoir le développement de la robotique et de l'intelligence artificielle. L'objectif ultime de RoboCup est de développer des équipes de robots capables de rivaliser avec des équipes humaines dans le football (soccer).
 
 Le fichier main.py permet de voir rapidement tout ce qu'il est possible de faire avec les programmes implémentés.
 Ce script Python effectue les opérations suivantes :\
