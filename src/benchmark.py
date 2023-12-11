@@ -1,13 +1,10 @@
 import os
 import time
 import numpy as np
-from PIL import Image
 import matplotlib.pyplot as plt
 from detection import main_detection
-from tensorflow.keras.models import load_model
 from prediction import create_mask,clear_all_masks
 from lib_poto_detection import MASK_GENERATION_REPO
-
 
 def get_time_for_detection(image_name):
     start_time = time.time()
