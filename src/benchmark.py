@@ -24,6 +24,7 @@ def get_time_for_prediction(image_name):
 def build_graph_of_benchmark(repo = 'log1/', remove_masks = True):
     detection_times = []
     prediction_times = []
+    create_mask(repo+str(1).zfill(3)+'-rgb.png', MASK_GENERATION_REPO) # the first prediction is always longer
     if remove_masks:
         clear_all_masks(MASK_GENERATION_REPO)
     for i in range(10):
