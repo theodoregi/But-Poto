@@ -50,4 +50,4 @@ Pour les affichages avec _Matplotlib_ (courbes), il est recommandé de fermer la
 
 ## Prérequis
 
-Afin de pouvoir faire tourner ce projet sur votre machine, il est nécessaire d'installer **tensorflow**.
+Afin de pouvoir faire fonctionner ce projet sur votre machine, il est nécessaire d'installer **Tensorflow**, NumPy (version >=1.17.3 et <1.25.0) et SciPy (version 1.26.1).
