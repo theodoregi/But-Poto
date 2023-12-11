@@ -105,7 +105,7 @@ def get_last_goal(registry_path):
             return file_name
     return
 
-def get_next_goal(registry_path, default="log1/011-rgb.png"):
+def get_next_goal(registry_path, default="log1/015-rgb.png"):
     if not os.path.exists(registry_path):
         print("Registry does not exist.")
         raise FileNotFoundError

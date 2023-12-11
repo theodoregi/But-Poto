@@ -68,10 +68,12 @@ def create_accuracy_file(accuracy_path):
         print("Accuracy file already exists.")
     return
 
+
 def clear_accuracy_file(accuracy_path):
     with open(accuracy_path, "w") as file:
         pass
     return
+
 
 def compute_all_goals_surface():
     clear_accuracy_file(ACCURACY_FILE)
@@ -85,6 +87,7 @@ def compute_all_goals_surface():
             [image_name, horizon_angle, x_max, x_min, y_max, y_min] = line.split(",")
             main_compute_goal_surface(image_name, int(float(horizon_angle)//1), int(x_max), int(x_min), int(y_max), int(y_min))
     return
+
 
 if __name__ == "__main__":
     create_accuracy_file(ACCURACY_FILE)

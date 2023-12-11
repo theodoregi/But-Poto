@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model
 def create_mask(img_name, path_to_save):
     if os.path.exists(path_to_save+img_name[4:]):
         print("Mask already exists.")
-        return
+        return path_to_save+img_name[4:]
     if not os.path.exists('./ML/model/model.h5'):
         print("Model does not exist.")
         raise FileNotFoundError
@@ -28,7 +28,7 @@ def create_mask(img_name, path_to_save):
     if not os.path.exists(path_to_save):
         os.makedirs(path_to_save)
     Image.fromarray(y_pred).save(path_to_save+img_name[4:])
-    return
+    return path_to_save+img_name[4:]
 
 
 def clear_all_masks(path):

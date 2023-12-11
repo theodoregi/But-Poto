@@ -2,8 +2,16 @@ L'objectif de ce projet est de détecter des poteaux (ainsi que les buts que for
 
 L'objectif est de modéliser de manière précise, et si possible rapide, les cages.
 
-Un ensemble de tests participatifs peut être réalisé selon les étapes suivantes :
+Le fichier main.py permet de voir rapidement tout ce qu'il est possible de faire avec les programmes implémentés.
+Ce script Python effectue les opérations suivantes :
+    1- Choix d'une image.
+    2- Création d'un masque pour l'image.
+    3- Détection des poteaux et du but associé sur l'image.
+    4- Benchmarks sur N images (10 par défaut).
+    5- Détection manuelle des poteaux et du but associé à partir d'une liste. Cette détection manuelle sert de référence pour le calcul de la précision de la détection basée sur le traitement d'image.
+    6- Affichage des statistiques de précision.
 
+Un ensemble de tests participatifs peut être réalisé selon les étapes suivantes :
     - Lancez le fichier ./src/register_goals.py dans un environnement Python.
         - Vous devrez vous-même détecter les cages en disposant 4 points sur l'image pour former un triangle.
         - Après avoir choisi les 4 points correspondant aux coins des buts, appuyez sur n'importe quelle touche de votre clavier.
