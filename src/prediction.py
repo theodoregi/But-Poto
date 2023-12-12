@@ -5,6 +5,12 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 
 def create_mask(img_name, path_to_save):
+    if os.path.exists(path_to_save+img_name[4:]):
+        print("Mask already exists.")
+        return path_to_save+img_name[4:]
+    if not os.path.exists('./ML/model/model.h5'):
+        print("Model does not exist.")
+        raise FileNotFoundError
     model = load_model('./ML/model/model.h5')
 
     image = Image.open('./data/'+img_name)
@@ -21,7 +27,14 @@ def create_mask(img_name, path_to_save):
     # save the result in ./ML/result
     if not os.path.exists(path_to_save):
         os.makedirs(path_to_save)
-    Image.fromarray(y_pred).save(path_to_save+img_name[4:])
+    Image.fromarray(y_pred).save(path_to_save+img_name[5:])
+    return path_to_save+img_name[5:]
+
+
+def clear_all_masks(path):
+    if os.path.exists(path):
+        for filename in os.listdir(path):
+            os.remove(path+filename)
     return
 
 if __name__ == '__main__':
