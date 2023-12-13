@@ -11,8 +11,7 @@ WIDTH_RESEARCH = 1.3 # # 1.3
 ANGLE_RESOLUTION = np.pi # # pi
 
 def main_detection(image_name, flag_display = 1, flag_debug = 0):
-    create_mask(image_name, MASK_GENERATION_REPO)
-    mask_name = MASK_GENERATION_REPO+image_name[5:]
+    mask_name = create_mask(image_name, MASK_GENERATION_REPO)
     mask = cv2.imread(mask_name, 0)
 
     # définition des paramètres de pré traitement
@@ -119,5 +118,5 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
 
 
 if __name__ == '__main__':
-    img_name = 'log1/010-rgb.png'
+    img_name = 'log1/015-rgb.png'
     main_detection(img_name,flag_display = 1, flag_debug = 0)
