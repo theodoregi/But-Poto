@@ -90,15 +90,18 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
     img_black,reg=register_lines(img_black,lines)
 
     #### on garde les lignes les plus grandes et on trace les buts
-    xmax = max(reg, key=lambda x: x[0])[0][0] -preprocessing
-    xmin = min(reg, key=lambda x: x[0])[0][0] -preprocessing
-    ymax = max(max(reg, key=lambda x: x[1][1])[1][1], max(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
-    ymin = min(min(reg, key=lambda x: x[1][1])[1][1], min(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
-
+    try:
+        xmax = max(reg, key=lambda x: x[0])[0][0] -preprocessing
+        xmin = min(reg, key=lambda x: x[0])[0][0] -preprocessing
+        ymax = max(max(reg, key=lambda x: x[1][1])[1][1], max(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
+        ymin = min(min(reg, key=lambda x: x[1][1])[1][1], min(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
+    except ValueError:
+        print("No goal detected")
+        return 0, 0, 0, 0, img_base, horizon_angle
+    
     # correction of goal height if the detection is incorrect
     deltaX = abs(xmax - xmin)
     deltaY = abs(ymax - ymin)
-    print("deltaX, deltaY", deltaX, deltaY)
     if deltaY > deltaX:
         ymin += int(deltaY / 2)
 
