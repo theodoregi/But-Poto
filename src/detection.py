@@ -102,7 +102,7 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
     deltaX = abs(xmax - xmin)
     deltaY = abs(ymax - ymin)
     if deltaY > deltaX:
-        ymin += int(deltaY / 2)
+        ymin = ymax - int(deltaX *0.70)
 
     img_color=draw_rectangle(img_color, xmin, ymin, xmax, ymax, 255, 0, 0)
     if flag_display:
