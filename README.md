@@ -1,3 +1,5 @@
+Margo Biret, Lucas Gavériaux, Théodore Gigault
+
 # Détection de poteaux de football sur une image
 
 Le but de ce projet consiste à mettre en œuvre la détection de poteaux, ainsi que la reconnaissance des buts formés par ces poteaux, à partir des images capturées par les caméras des robots participant au football.

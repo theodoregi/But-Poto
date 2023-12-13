@@ -94,6 +94,14 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
     xmin = min(reg, key=lambda x: x[0])[0][0] -preprocessing
     ymax = max(max(reg, key=lambda x: x[1][1])[1][1], max(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
     ymin = min(min(reg, key=lambda x: x[1][1])[1][1], min(reg, key=lambda x: x[0][1])[0][1]) -preprocessing
+
+    # correction of goal height if the detection is incorrect
+    deltaX = abs(xmax - xmin)
+    deltaY = abs(ymax - ymin)
+    print("deltaX, deltaY", deltaX, deltaY)
+    if deltaY > deltaX:
+        ymin += int(deltaY / 2)
+
     img_color=draw_rectangle(img_color, xmin, ymin, xmax, ymax, 255, 0, 0)
     if flag_display:
         print("Detected points (xmax, xmin, ymax, ymin):", xmax, xmin, ymax, ymin)
@@ -108,5 +116,5 @@ def main_detection(image_name, flag_display = 1, flag_debug = 0):
 
 
 if __name__ == '__main__':
-    img_name = 'log1/015-rgb.png'
+    img_name = 'log1/010-rgb.png'
     main_detection(img_name,flag_display = 1, flag_debug = 0)
